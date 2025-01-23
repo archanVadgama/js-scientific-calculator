@@ -1,3 +1,8 @@
+::selection {
+    color: #333;
+    background: #fff;
+}
+
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
@@ -35,6 +40,14 @@ body {
     border-radius: 5px;
 }
 
+.calculator-display input:focus{
+    border: none;
+    outline: none;
+    caret-color: #333;
+    high
+    box-shadow: 0 0 10px 3px rgba(78, 76, 76, 0.3);
+} 
+
 /* Buttons Layout */
 .calculator-buttons {
     display: grid;
@@ -49,7 +62,6 @@ body {
     border: 1px solid #ccc;
     font-size: 16px;
     padding: 20px;
-    width: 0.9vw;
     text-align: center;
     cursor: pointer;
     border-radius: 5px;
@@ -61,7 +73,6 @@ body {
     font-size: 16px;
     padding: 20px;
     border: none;
-    width: 0.9vw;
     text-align: center;
     cursor: pointer;
     border-radius: 5px;
@@ -125,6 +136,7 @@ body {
 }
 
 .icon-color{
+    padding-top: 5px;
     color:#fff;
 }
 #delete:hover {

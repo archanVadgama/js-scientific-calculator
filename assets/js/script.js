@@ -1,8 +1,7 @@
-
 //fetch then catach
 // var userData = fetch('https://randomuser.me/api/')
 //   .then((raw) => {
-//     return raw.json(); 
+//     return raw.json();
 //   });
 // userData.then(data => {
 //     if(data)
@@ -21,7 +20,7 @@
 //         }else{
 //             reject();
 //         }
-//         // return raw.json(); 
+//         // return raw.json();
 //     });
 // })
 // userData.then((data)=>{
@@ -33,16 +32,15 @@
 //     console.log('data not found');
 // });
 
-
 //fetch then with async await
 // async function fetchUserData() {
 //     try {
 //       const response = await fetch('https://randomuser.me/api/');
-      
+
 //       if (!response.ok) {
 //         throw new Error('Data not found');
 //       }
-  
+
 //       const data = await response.json(); // Parsing the JSON data
 //       console.log(data);
 //       console.log('Data found');
@@ -51,9 +49,8 @@
 //      console.log('Data not found');
 //     }
 //   }
-  
-//   fetchUserData();
 
+//   fetchUserData();
 
 // let allUsers = [];
 
@@ -62,12 +59,12 @@
 //     try {
 //         let response = await fetch('https://randomuser.me/api/?nat=in&results=100');
 //         let data = await response.json();
-        
+
 //         if (data) {
 //             console.log('data found');
 //             // console.log(data);
 //             // console.log('first name: ' + data.results[0].name.first);
-            
+
 //             for (let i = 1; i <= data.results.length; i++) {
 //                 let user = {
 //                   "first" : data.results[i].name.first,
@@ -78,7 +75,7 @@
 //                   "state" :data.results[i].location.state
 //                 };
 //                 // console.log(user);
-//                 allUsers.push(user); 
+//                 allUsers.push(user);
 //             }
 //             } else {
 //                 console.log('data not found');
@@ -93,8 +90,6 @@
 // }
 // // fetchUserData();
 
-
-
 // let xmlhttp = new XMLHttpRequest();
 // xmlhttp.open('GET', 'https://randomuser.me/api/?nat=in&results=100', true);
 // xmlhttp.onload = function() {
@@ -103,15 +98,24 @@
 // }
 // xmlhttp.send();
 
-
 //Object Oriented JS
 
-import { Arithmatic } from './Class/Operations.js'
+import { Calculator, Trigo } from "./Modules/Calculator.js";
+import { evaluate } from "./Modules/Evaluate.js";
 
-console.log(Arithmatic.divide(8,4));
+// const historyAdd = new History;
+// historyAdd('12+13+14', 39)
+// console.log(History.historyId);
+// console.log(Calculator.add(8, 4));
 
+// let calculator = new Calculator(8, 4);
+// let trigoCal = new Trigo(60);
+// console.log(calculator);
+// console.log(trigoCal.sin());
+// console.log(Trigo.sin(60));
+// console.log('add -> ',calculator.add());
+// console.log('subtract -> ',calculator.subtract());
+// console.log('multiply -> ',calculator.multiply());
+// console.log('sin -> ',calculator.__proto__.Trigo);
 
-
-
-
-
+// console.log(evaluate("45+45-++--5")); 
