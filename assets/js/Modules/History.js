@@ -3,7 +3,7 @@ const History = {
 
     setHistory(exp, res) {
         // console.log(this.history.at(length-1));
-        
+
         // Create a new history entry
         const newHistoryEntry = {
             key: this.history?.at(length-1)?.key + 1 || 1,  
@@ -22,6 +22,12 @@ const History = {
 
     getHistory() {
         return this.history;  // Retrieve the full history
+    },
+
+    formatHistory(){
+        return this.history.map((entry, index) => {
+            return `${entry.expression} = ${entry.result}`;}).join("\n");
+        
     }
 };
 
