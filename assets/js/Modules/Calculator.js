@@ -37,9 +37,15 @@ class Trigo {
         const radians = this.val1 * Math.PI / 180;
         return Math.sin(radians);
     }
-    static cos(degrees) {
+    
+    cos() {
         const radians = degrees * Math.PI / 180;
         return Math.cos(radians);
+    }
+
+    tan() {
+        const radians = degrees * Math.PI / 180;
+        return Math.tan(radians);
     }
 }
 class Calculator extends Arithmatic{

@@ -4,15 +4,17 @@ import { Error } from "./Error.js";
 
 // Get the display element
 const historyTextarea = document.getElementById("history");
+const fullHistoryTextarea = document.getElementById("full-history");
 const display = document.getElementById("display");
 const BUTTONS = document.querySelectorAll(".button");
 const MIN_TEXTAREA_HEIGHT = 15;
-const MAX_TEXTAREA_HEIGHT = 67;
+const MAX_TEXTAREA_HEIGHT = 60;
 
 //this will be used to set history in the textarea
 function setHistoryUI(){
   if(History.getHistory().length > 0){
-    let newTextareaHeight = 5 + (MIN_TEXTAREA_HEIGHT * History.getHistory().length);
+    document.getElementById("history-btn").style.display = "block"
+    let newTextareaHeight = 10 + (MIN_TEXTAREA_HEIGHT * History.getHistory().length);
     
     if(newTextareaHeight > MAX_TEXTAREA_HEIGHT){
       historyTextarea.style.height = MAX_TEXTAREA_HEIGHT +"px";
@@ -21,9 +23,12 @@ function setHistoryUI(){
     }
     
     historyTextarea.style.paddingBottom = '10px'
-    historyTextarea.value = History.formatHistory()
+    historyTextarea.innerHTML = History.formatHistory()
     historyTextarea.style.display ='block'
     historyTextarea.scrollTop = historyTextarea.scrollHeight
+    fullHistoryTextarea.innerHTML = History.formatHistory() 
+  }else{
+    document.getElementById("history-btn").style.display = "none"
   }
 }
 
@@ -38,13 +43,12 @@ BUTTONS.forEach((button) => {
       try {
         if (display.value != "") {
           let result = evaluate(display.value)
-          // console.log(evaluate(display.value));
-          if(!isNaN(result)){
+          // console.log(evaluate("45+98/5-(10*2)"));
+          if(!isNaN(result) && !Array.isArray(result)){
             History.setHistory(display.value, result);
             // console.log(History.getHistory());
+            setHistoryUI()
           }
-          setHistoryUI()
-        
           display.value = result;
         }
       } catch {
@@ -63,11 +67,15 @@ BUTTONS.forEach((button) => {
 // keyboard keys array
 const NUMBER_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const OPERATIONS_KEYS = [".", "-", "+", "/", "*", "%"];
+const PARENTHESES = ["{", "}", "[", "]", "(", ")"];
+  // let result = evaluate("6+2")
+  // console.log("FINAL RESULT "+result);
+// 6+8*2-5+(8-2+5*3)/2
 
 // event listener that will be triggered when a key is pressed
 document.addEventListener("keydown", function (e) {
   // console.log(e.key);
-
+  
   // it will calculate the input 
   if (e.key == "Enter") {
     if (display.value != "") {
@@ -78,8 +86,8 @@ document.addEventListener("keydown", function (e) {
         History.setHistory(display.value, result);
         // console.log(History.getHistory());
         setHistoryUI(); // set history
-        display.value = result;
       }
+      display.value = result;
     }
   }
 
@@ -87,13 +95,34 @@ document.addEventListener("keydown", function (e) {
   if (e.key == "Escape") {
     display.value = "";
   }
+
+  // press 's' for sin() 
+  if (e.key == "S" || e.key == "s") {
+    display.value += " sin( ";
+  }
+
+  // press 'c' for cos() 
+  if (e.key == "C" || e.key == "c") {
+    display.value += " cos( ";
+  }
+
+  // press 't' for tan() 
+  if (e.key == "T" || e.key == "t") {
+    display.value += " tan( ";
+  }
+
+  // press 'l' for log() 
+  if (e.key == "L" || e.key == "l") {
+    display.value += " log( ";
+  }
+
   // it will delete the last character
   if (e.key == "Delete" || e.key == "Backspace") {
     display.value = display.value.slice(0, -1);
   }
 
   // concat both arrays and check which key is pressed
-  NUMBER_KEYS.concat(OPERATIONS_KEYS).forEach(function (value) {
+  NUMBER_KEYS.concat(OPERATIONS_KEYS).concat(PARENTHESES).forEach(function (value) {
     if (value == e.key) {
 
       // let testM= "NaN";
@@ -110,8 +139,22 @@ document.addEventListener("keydown", function (e) {
       }
 
       // Otherwise, append the key to the display value
-      display.value += e.key;
-    }
+
+      // it will change multiply(*) to ×
+      if (e.key == "*") {
+        display.value += " × ";
+      }else
+        // it will change divide(/) to ÷ 
+        if (e.key == "/") {
+          display.value += " ÷ ";
+        }else{
+          if(NUMBER_KEYS.includes(e.key)){
+            display.value += e.key;
+          }else{
+            display.value += " " +e.key+ " ";
+          }
+        }
+      }
   });
 });
 
@@ -171,5 +214,14 @@ if (toggleMode) {
   });
 }
 
+// by click on this button it will OPEN the pop up model
+document.getElementById("history-btn").addEventListener("click", function () {
+  document.getElementById("full-history-container").style.display = "block";
+});
+
+// by click on this button it will CLSOE the pop up model
+document.getElementById("close-btn").addEventListener("click", function () {
+  document.getElementById("full-history-container").style.display = "none";
+});
 
 // export default EventHandler;

@@ -24,11 +24,13 @@ const History = {
         return this.history;  // Retrieve the full history
     },
 
-    formatHistory(){
-        return this.history.map((entry, index) => {
-            return `${entry.expression} = ${entry.result}`;}).join("\n");
-        
+    formatHistory() {
+        return this.history
+            .map(entry => `${entry.expression} = ${entry.result}`)  // Format entries
+            .join("<br>");  // Join with <br>
     }
+    
+    
 };
 
 export { History };

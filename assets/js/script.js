@@ -108,9 +108,10 @@ import { evaluate } from "./Modules/Evaluate.js";
 // console.log(History.historyId);
 // console.log(Calculator.add(8, 4));
 
-// let calculator = new Calculator(8, 4);
+let calculator = new Calculator(8, 4);
+console.log(calculator.__proto__);
 // let trigoCal = new Trigo(60);
-// console.log(calculator);
+// console.log(trigoCal);
 // console.log(trigoCal.sin());
 // console.log(Trigo.sin(60));
 // console.log('add -> ',calculator.add());
@@ -119,3 +120,4 @@ import { evaluate } from "./Modules/Evaluate.js";
 // console.log('sin -> ',calculator.__proto__.Trigo);
 
 // console.log(evaluate("45+45-++--5")); 
+// 45+98/5-(10*2)
