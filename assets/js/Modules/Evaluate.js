@@ -6,7 +6,8 @@ const precedence = {
     '+': 1,
     '-': 1,
     '×': 2,
-    '÷': 2
+    '÷': 2,
+    '%': 3,
 };
 
 // Function to check if the input is a number
@@ -31,6 +32,8 @@ function infixToPostfix(expression) {
                 number = "";  // Reset the number string
             }
             if (char === '(') {
+                operators.push(char);  // Push '(' onto the operator stack
+            } else if (char === '(') {
                 operators.push(char);  // Push '(' onto the operator stack
             } else if (char === ')') {
                 // Pop operators until '(' is encountered
@@ -62,10 +65,25 @@ function infixToPostfix(expression) {
 }
 
 // Function to evaluate postfix expression
-function evaluatePostfix(postfix) {
+function evaluatePostfix(postfix, otherOperation) {
     const stack = [];
 
-    console.log("Postfix is +++ "+postfix);
+    console.log("Postfix is +++ ");
+    console.log(postfix);
+    if(postfix.length < 2){
+        return postfix;
+    }
+
+    if(postfix.length >= 2){
+        if(isNaN(postfix[0]) && isNaN(postfix[1])){
+            return postfix;
+        }else{
+        }
+    }
+    
+    console.log('last option -- '+postfix.at(length-1));
+    console.log('last 2 option -- '+postfix.at(length-2));
+    
     for (let token of postfix) {
         if (isNumber(token)) {
             stack.push(token);  // Push number to the stack
@@ -80,34 +98,73 @@ function evaluatePostfix(postfix) {
             // Perform the operation based on the operator
             switch (token) {
                 case "+":
-                    result = new Calculator(a, b).add();
-                    break;
+                    if(!isNaN(a) && !isNaN(b)){
+                        result = new Calculator(a, b).add();
+                        break;
+                    }
+                    return Error[3].message;
                 case "-":
-                    result = new Calculator(a, b).subtract();
-                    break;
+                    if(!isNaN(a) && !isNaN(b)){
+                        result = new Calculator(a, b).subtract();
+                        break;
+                    }
+                    return Error[3].message;
                 case "×":
-                    result = new Calculator(a, b).multiply();
-                    break;
+                    if(!isNaN(a) && !isNaN(b)){
+                        result = new Calculator(a, b).multiply();
+                        break;
+                    }
+                    return Error[3].message;
                 case "÷":
-                    result = new Calculator(a, b).division();
-                    break;
-                default:
+                    if(!isNaN(a) && !isNaN(b)){
+                        result = new Calculator(a, b).division();
+                        break;
+                    }
+                    return Error[3].message;
+                case "%":
+                    if(!isNaN(a) && !isNaN(b)){
+                        result = new Calculator(a, b).modulo();
+                        break;
+                    }
+                    return Error[3].message;
+                default:    
                     return Error[3].message;
             }
             console.log("result --- "+result);
             console.log("Stack 2 is +++ "+stack);
             // Check if result is a decimal and format it
             // result = (result - Math.floor(result)) !== 0 ? result.toFixed(2) : result;
+            if(otherOperation){
+                console.log(otherOperation);
+                switch (otherOperation) {
+                    case "square":
+                        if(!isNaN(result)){
+                            result = new Calculator(result).square();
+                            break;
+                        }
+                        return Error[3].message;
+                    case "cube":
+                        if(!isNaN(result)){
+                            result = new Calculator(result).cube();
+                            break;
+                        }
+                        return Error[3].message;
+                    
+                    default:    
+                        return Error[3].message;
+                }
+            }
             stack.push(result);  // Push the result to the stack
         }
     }
 
     // The final result will be the only element left in the stack
     return stack.pop();
+    
 }
 
 // Main evaluator function
-export const evaluate = function (expression) {
+export const evaluate = function (expression, otherOperation) {
     if (expression.trim() === "") {
         return 0;  // If the expression is empty, return 0
     }
@@ -119,5 +176,5 @@ export const evaluate = function (expression) {
     const postfix = infixToPostfix(expression);
 
     // Evaluate the postfix expression
-    return evaluatePostfix(postfix);
+    return evaluatePostfix(postfix, otherOperation);
 };

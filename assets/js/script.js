@@ -100,7 +100,7 @@
 
 //Object Oriented JS
 
-import { Calculator, Trigo } from "./Modules/Calculator.js";
+import { Calculator, AdvanceCalculation } from "./Modules/Calculator.js";
 import { evaluate } from "./Modules/Evaluate.js";
 
 // const historyAdd = new History;
@@ -110,7 +110,7 @@ import { evaluate } from "./Modules/Evaluate.js";
 
 let calculator = new Calculator(8, 4);
 console.log(calculator.__proto__);
-// let trigoCal = new Trigo(60);
+// let trigoCal = new AdvanceCalculation(60);
 // console.log(trigoCal);
 // console.log(trigoCal.sin());
 // console.log(Trigo.sin(60));
@@ -121,3 +121,4 @@ console.log(calculator.__proto__);
 
 // console.log(evaluate("45+45-++--5")); 
 // 45+98/5-(10*2)
+

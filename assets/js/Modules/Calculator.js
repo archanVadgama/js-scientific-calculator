@@ -26,9 +26,22 @@ class Arithmatic {
         }
         return this.val1 / this.val2;
     }
+
+    // it will perform modulo operation
+    modulo() {
+        return this.val1 % this.val2;
+    }
+    
+    square(){
+        return this.val1 * this.val1;
+    }
+    
+    cube(){
+        return this.val1 * this.val1 * this.val1;
+    }
 }
 
-class Trigo {
+class AdvanceCalculation {
     constructor(val1){
         this.val1 = val1;
     }
@@ -56,7 +69,7 @@ class Calculator extends Arithmatic{
     }
 }
 
-export { Calculator, Trigo};
+export { Calculator, AdvanceCalculation};
 // export default Operations; 
 
 

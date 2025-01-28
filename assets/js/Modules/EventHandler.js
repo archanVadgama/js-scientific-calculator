@@ -10,6 +10,10 @@ const BUTTONS = document.querySelectorAll(".button");
 const MIN_TEXTAREA_HEIGHT = 15;
 const MAX_TEXTAREA_HEIGHT = 60;
 
+// keyboard keys array
+const NUMBER_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const OPERATIONS_KEYS = [".", "-", "+", "/", "*", "%", "(", ")"];
+
 //this will be used to set history in the textarea
 function setHistoryUI(){
   if(History.getHistory().length > 0){
@@ -39,14 +43,19 @@ BUTTONS.forEach((button) => {
   button.addEventListener("click", function () {
     const value = button.dataset.value;
 
+    // ite will check error and if this is error in input it will clear error adn new input value can be inserted
+    if(Error.some((err) => err.message == display.value)){
+      display.value = "";
+    }
+
     if (value === "=") {
       try {
         if (display.value != "") {
-          let result = evaluate(display.value)
+          let result = evaluate(display.value, value);
           // console.log(evaluate("45+98/5-(10*2)"));
           if(!isNaN(result) && !Array.isArray(result)){
             History.setHistory(display.value, result);
-            // console.log(History.getHistory());
+            console.log(History.getHistory(),result);
             setHistoryUI()
           }
           display.value = result;
@@ -56,18 +65,22 @@ BUTTONS.forEach((button) => {
       }
     } else if (value === "C") {
       display.value = "";
+    // } else if (value === "square") {
+    //   display.value = display.value*display.value;
+    // } else if (value === "cube") {
+    //   display.value = display.value*display.value*display.value;
     } else if (value === "D") {
       display.value = display.value.slice(0, -1);
     } else {
-      display.value += value;
+      if(NUMBER_KEYS.includes(value)){
+        display.value += value;
+      }else{
+        display.value += " " +value+ " ";
+      }
     }
   });
 });
 
-// keyboard keys array
-const NUMBER_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const OPERATIONS_KEYS = [".", "-", "+", "/", "*", "%"];
-const PARENTHESES = ["{", "}", "[", "]", "(", ")"];
   // let result = evaluate("6+2")
   // console.log("FINAL RESULT "+result);
 // 6+8*2-5+(8-2+5*3)/2
@@ -122,7 +135,7 @@ document.addEventListener("keydown", function (e) {
   }
 
   // concat both arrays and check which key is pressed
-  NUMBER_KEYS.concat(OPERATIONS_KEYS).concat(PARENTHESES).forEach(function (value) {
+  NUMBER_KEYS.concat(OPERATIONS_KEYS).forEach(function (value) {
     if (value == e.key) {
 
       // let testM= "NaN";

@@ -3,7 +3,7 @@ export const Error = [
     message: "Internal Server Error",
   },
   {
-    message: "NasN",
+    message: "NaN",
   },
   {
     message: "Error",
