@@ -1,6 +1,6 @@
 import { Error } from "./Error.js";
 
-class Arithmatic {
+class BasicCalculation {
     
     //it will perform addtition
     add() {
@@ -32,17 +32,11 @@ class Arithmatic {
         return this.val1 % this.val2;
     }
     
-    square(){
-        return this.val1 * this.val1;
-    }
-    
-    cube(){
-        return this.val1 * this.val1 * this.val1;
-    }
 }
 
-class AdvanceCalculation {
+class AdvanceCalculation extends BasicCalculation {
     constructor(val1){
+        super();
         this.val1 = val1;
     }
 
@@ -52,16 +46,25 @@ class AdvanceCalculation {
     }
     
     cos() {
-        const radians = degrees * Math.PI / 180;
+        const radians = this.val1 * Math.PI / 180;
         return Math.cos(radians);
     }
 
     tan() {
-        const radians = degrees * Math.PI / 180;
+        const radians = this.val1 * Math.PI / 180;
         return Math.tan(radians);
     }
+
+    log() {
+        const LOG_BASE = 2.302585; // ln(10)
+        return Math.log(this.val1) / LOG_BASE;  // Divide by ln(10) to convert ln to log10
+    }    
+
+    sqrt() {
+        return Math.sqrt(this.val1);
+    }    
 }
-class Calculator extends Arithmatic{
+class Calculator extends AdvanceCalculation{
     constructor(val1, val2){
         super()
         this.val1 = val1;

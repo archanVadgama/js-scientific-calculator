@@ -108,7 +108,10 @@ import { evaluate } from "./Modules/Evaluate.js";
 // console.log(History.historyId);
 // console.log(Calculator.add(8, 4));
 
-let calculator = new Calculator(8, 4);
+let calculator = new Calculator(45,6);
+console.log(calculator.add());
+console.log(calculator.cos());
+console.log(calculator.log());
 console.log(calculator.__proto__);
 // let trigoCal = new AdvanceCalculation(60);
 // console.log(trigoCal);
@@ -121,4 +124,7 @@ console.log(calculator.__proto__);
 
 // console.log(evaluate("45+45-++--5")); 
 // 45+98/5-(10*2)
-
+console.log('Start');
+setTimeout(() => console.log('Timeout'), 0);
+Promise.resolve().then(() => console.log('Promise'));
+console.log('End');

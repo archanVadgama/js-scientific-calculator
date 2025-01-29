@@ -31,12 +31,16 @@ function setHistoryUI(){
     historyTextarea.style.display ='block'
     historyTextarea.scrollTop = historyTextarea.scrollHeight
     fullHistoryTextarea.innerHTML = History.formatHistory() 
+    fullHistoryTextarea.style.paddingRight = '10px'
+    fullHistoryTextarea.scrollTop = fullHistoryTextarea.scrollHeight
   }else{
     document.getElementById("history-btn").style.display = "none"
   }
 }
 
 setHistoryUI() //set history on page load
+let testcase = evaluate("5 - 9 × 45 + tan( 120 + 45 - 60 )");
+console.log(Number(testcase).toFixed(2));
 
 // itrate throught each element and check which one is clicked
 BUTTONS.forEach((button) => {
@@ -54,6 +58,8 @@ BUTTONS.forEach((button) => {
           let result = evaluate(display.value, value);
           // console.log(evaluate("45+98/5-(10*2)"));
           if(!isNaN(result) && !Array.isArray(result)){
+            // result = Number(result).tofixed(2)
+            console.log(result);
             History.setHistory(display.value, result);
             console.log(History.getHistory(),result);
             setHistoryUI()
