@@ -26,8 +26,8 @@ const History = {
 
     formatHistory() {
         return this.history
-            .map(entry => `${entry.expression} = <span style="color: #57c85c;">${entry.result}</span>`)  // Format entries
-            .join("<br><br>");  // Join with <br>
+            .map(entry => `<span class="font-medium">${entry.expression}</span> = <span class="answere">${entry.result}</span>`)  // Format entries
+            .join("<br>");  // Join with <br>
     }
     
     

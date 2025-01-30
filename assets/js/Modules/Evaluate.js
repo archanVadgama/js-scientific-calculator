@@ -3,21 +3,33 @@ import { Error } from "./Error.js";
 
 // Define precedence for operators
 const precedence = {
-    '+': 1,
-    '-': 1,
-    '×': 2,
-    '÷': 2,
-    '^': 3, // Exponentiation has higher precedence
+    "+": 1,
+    "-": 1,
+    "×": 2,
+    "÷": 2,
+    "^": 3, 
 };
 
-// Supported scientific functions and constants
-const scientificFunctions = ['sin', 'cos', 'tan', 'log', 'sqrt', 'exp', 'root', 'square', 'degree', 'radian'];
+// scientific functions and constants
+const scientificFunctions = [
+    "sin",
+    "cos",
+    "tan",
+    "log",
+    "sqrt",
+    "exp",
+    "root",
+    "square",
+    "degree",
+    "radian",
+];
+
 const constants = {
-    'π': Math.PI,
-    'e': Math.E,
+    π: Math.PI,
+    e: Math.E,
 };
 
-// Function to check if the input is a number or a constant
+// This mehtod will check if the input is a number or a constant
 function isNumber(value) {
     return !isNaN(value) || value in constants;
 }
@@ -31,13 +43,13 @@ function tokenize(expression) {
     while (i < expression.length) {
         const char = expression[i];
 
-        if (isNumber(char) || char === '.') {
-            number += char; // Build the number as a string
+        if (isNumber(char) || char === ".") {
+            number += char; 
             i++;
         } else if (char in constants) {
             tokens.push(constants[char]); // Push the constant value
             i++;
-        } else if (char === '(' || char === ')') {
+        } else if (char === "(" || char === ")") {
             if (number) {
                 tokens.push(parseFloat(number));
                 number = "";
@@ -52,8 +64,11 @@ function tokenize(expression) {
             tokens.push(char);
             i++;
         } else {
+
             // Check for scientific functions
-            const functionName = scientificFunctions.find(func => expression.startsWith(func, i));
+            const functionName = scientificFunctions.find((func) =>
+                expression.startsWith(func, i)
+            );
             if (functionName) {
                 if (number) {
                     tokens.push(parseFloat(number));
@@ -71,38 +86,43 @@ function tokenize(expression) {
     if (number) {
         tokens.push(parseFloat(number));
     }
-
     return tokens;
 }
 
-// Function to convert infix to postfix using the Shunting Yard algorithm
+// Function to convert infix to postfix
 function infixToPostfix(tokens) {
     const output = [];
     const operators = [];
 
     for (let token of tokens) {
         if (isNumber(token)) {
-            output.push(token); // Push numbers directly to the output
+            
+            // Push numbers directly to the output
+            output.push(token); 
         } else if (scientificFunctions.includes(token)) {
-            operators.push(token); // Push functions to the operator stack
+            
+            // Push functions to the operator stack
+            operators.push(token);
         } else if (token in precedence) {
+            
             // Handle operators
             while (
                 operators.length &&
-                operators[operators.length - 1] !== '(' &&
+                operators[operators.length - 1] !== "(" &&
                 precedence[operators[operators.length - 1]] >= precedence[token]
             ) {
                 output.push(operators.pop()); // Pop higher precedence operators
             }
             operators.push(token); // Push the current operator
-        } else if (token === '(') {
+        } else if (token === "(") {
             operators.push(token); // Push '(' to the stack
-        } else if (token === ')') {
+        } else if (token === ")") {
+            
             // Pop operators until '(' is encountered
-            while (operators.length && operators[operators.length - 1] !== '(') {
+            while (operators.length && operators[operators.length - 1] !== "(") {
                 output.push(operators.pop());
             }
-            operators.pop(); // Remove the '('
+            operators.pop(); 
             if (scientificFunctions.includes(operators[operators.length - 1])) {
                 output.push(operators.pop()); // Push the function to the output
             }
@@ -123,41 +143,47 @@ function evaluatePostfix(postfix) {
 
     for (let token of postfix) {
         if (isNumber(token)) {
-            stack.push(token); // Push numbers to the stack
+            // Push numbers to the stack
+            stack.push(token); 
         } else if (scientificFunctions.includes(token)) {
+            
             // Handle scientific functions
             const a = stack.pop();
+            const calculation = new Calculator();
             let result;
+            console.log(token);
             switch (token) {
-                case 'sin':
-                    result = Math.sin(a);
+                case "sin":
+                    result = newcalculator.constructor(a).sinR();
                     break;
-                case 'cos':
-                    result = Math.cos(a);
+                case "cos":
+                    console.log('test2');
+                    result = new Calculator(a).cosR();
+                    console.log('test3');
                     break;
-                case 'tan':
-                    result = Math.tan(a);
+                case "tan":
+                    result = new Calculator(a).tanR();
                     break;
-                case 'log':
-                    result = Math.log10(a);
+                case "log":
+                    result = new Calculator(a).log10();
                     break;
-                case 'sqrt':
-                    result = Math.sqrt(a);
+                case "sqrt":
+                    result = new Calculator(a).sqrt();
                     break;
-                case 'exp':
+                case "exp":
                     result = Math.exp(a);
                     break;
-                case 'root':
+                case "root":
                     const b = stack.pop();
-                    result = Math.pow(b, 1 / a); // a-th root of b
+                    result = Math.pow(b, 1 / a); 
                     break;
-                case 'square':
+                case "square":
                     result = Math.pow(a, 2);
                     break;
-                case 'degree':
+                case "degree":
                     result = (a * 180) / Math.PI; // Convert radians to degrees
                     break;
-                case 'radian':
+                case "radian":
                     result = (a * Math.PI) / 180; // Convert degrees to radians
                     break;
                 default:
@@ -165,34 +191,42 @@ function evaluatePostfix(postfix) {
             }
             stack.push(result);
         } else {
+
             // Handle basic arithmetic operations
             const b = stack.pop();
             const a = stack.pop();
             let result;
-            switch (token) {
-                case "+":
-                    result = new Calculator(a, b).add();
-                    break;
-                case "-":
-                    result = new Calculator(a, b).subtract();
-                    break;
-                case "×":
-                    result = new Calculator(a, b).multiply();
-                    break;
-                case "÷":
-                    result = new Calculator(a, b).division();
-                    break;
-                case "^":
-                    result = Math.pow(a, b); // Exponentiation
-                    break;
-                default:
-                    return Error[3].message;
+            try {
+                switch (token) {
+                    case "+":
+                        result = new Calculator(a, b).add();
+                        break;
+                    case "-":
+                        result = new Calculator(a, b).subtract();
+                        break;
+                    case "×":
+                        result = new Calculator(a, b).multiply();
+                        break;
+                    case "÷":
+                        result = new Calculator(a, b).division();
+                        break;
+                    case "^":
+                        result = Math.pow(a, b); // Exponentiation
+                        break;
+                    default:
+                        return Error[3].message;
+                }
+            } catch (e) {
+                result = e.message
+                stack.push(result);
+                break
             }
             stack.push(result);
+            console.log(stack);
         }
     }
 
-    // The final result will be the only element left in the stack
+    // The final result will be the only last element in the stack
     return stack.pop();
 }
 
@@ -204,7 +238,6 @@ export const evaluate = function (expression) {
 
     // Remove any spaces from the expression
     expression = expression.replace(/\s+/g, "");
-
     // Tokenize the expression
     const tokens = tokenize(expression);
 

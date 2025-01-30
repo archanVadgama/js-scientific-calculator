@@ -1,10 +1,13 @@
-import { Error } from "./Error.js";
+import { Error as SetError } from "./Error.js";
 
 class BasicCalculation {
     
     //it will perform addtition
     add() {
-        return this.val1 + this.val2;
+        if(!isNaN(this.val1) && !isNaN(this.val2)){
+            return this.val1 + this.val2;
+        }
+        return Error[3].message;
     }
 
     //it will perform subtraction
@@ -37,40 +40,68 @@ class BasicCalculation {
 class AdvanceCalculation extends BasicCalculation {
     constructor(val1){
         super();
+        // Check val1 is numbers
+        console.log('advace');
+        if (isNaN(val1)) {
+            // throw new Error(SetError[3].message);
+        }
         this.val1 = val1;
     }
 
-    sin() {
-        const radians = this.val1 * Math.PI / 180;
-        return Math.sin(radians);
+    sinR() {
+        return Math.sin(this.val1);
     }
     
-    cos() {
-        const radians = this.val1 * Math.PI / 180;
-        return Math.cos(radians);
+    cosR() {
+        console.log('test inside');
+        return Math.cos(this.val1);
     }
 
-    tan() {
-        const radians = this.val1 * Math.PI / 180;
-        return Math.tan(radians);
+    tanR() {
+        return Math.tan(this.val1);
     }
 
-    log() {
-        const LOG_BASE = 2.302585; // ln(10)
-        return Math.log(this.val1) / LOG_BASE;  // Divide by ln(10) to convert ln to log10
-    }    
+    sinD() {
+        const degree = this.val1 * Math.PI / 180;
+        return Math.sin(degree);
+    }
+    
+    cosD() {
+        const degree = this.val1 * Math.PI / 180;
+        return Math.cos(degree);
+    }
+
+    tanD() {
+        const degree = this.val1 * Math.PI / 180;
+        return Math.tan(degree);
+    }
+
+    log10() {
+        return Math.log10(this.val1)
+    }
 
     sqrt() {
         return Math.sqrt(this.val1);
     }    
 }
-class Calculator extends AdvanceCalculation{
-    constructor(val1, val2){
-        super()
+class Calculator extends AdvanceCalculation {
+    constructor(val1, val2) {
+        super();
+        
+        // Check if both val1 and val2 are numbers
+        // if (isNaN(val1) || isNaN(val2)) {
+        //     console.log("values are ");
+        //     console.log(val1);
+        //     console.log(val2);
+        //     throw new Error(SetError[3].message);
+        // }
+        
+        // Assign values
         this.val1 = val1;
         this.val2 = val2;
     }
 }
+
 
 export { Calculator, AdvanceCalculation};
 // export default Operations; 

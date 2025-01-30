@@ -18,7 +18,7 @@ body {
 }
 /* Calculator container */
 .calculator {
-    width: 450px;
+    width: auto;
     border: #686767 2px solid;
     border-radius: 5px;
     background-color: #fff;
@@ -89,6 +89,7 @@ body {
     background-color: #f1f1f1;
     border: 1px solid #ccc;
     font-size: 0.8rem;
+    margin-right: 6px;
     padding: 10px;
     border: none;
     text-align: center;
@@ -115,7 +116,7 @@ body {
     resize: none;
     border: none;
     z-index: 999;
-    width: 450px;    
+    width: auto;    
     top: 7%;
     height: 450px;
     color: white;
@@ -155,7 +156,7 @@ body {
 /* Buttons Layout */
 .calculator-buttons {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 10px;
     padding: 20px;
 }
@@ -210,6 +211,31 @@ body {
     box-shadow: 0 0 10px 3px rgba(212, 212, 212, 0.6);
 }
 
+/* .calculation-mode{
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    padding: 20px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.calculation-mode:hover{
+    border: none;
+    transition: ease-in-out 0.2s;
+    background-color: #49f3eb;
+    box-shadow: 0 0 10px 3px rgba(73, 243, 235, 0.6);
+} */
+ 
+.active{
+    border-radius: 5px;
+    border: none;
+    transition: ease-in-out 0.2s;
+    background-color: #49f3eb;
+    box-shadow: 0 0 10px 3px rgba(73, 243, 235, 0.6);
+}
+
 /* Special Button Styles */
 #clear {
     background-color: #ff4d4d;
@@ -251,4 +277,9 @@ body {
     border: none;
     transition: ease-in-out 0.2s;
     box-shadow: 0 0 10px 3px rgba(241, 209, 26, 0.6);
+}
+
+.answere{
+    font-size: 1.5rem; 
+    font-weight: bolder;
 }

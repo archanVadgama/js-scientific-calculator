@@ -6,19 +6,27 @@ import { Error } from "./Error.js";
 const historyTextarea = document.getElementById("history");
 const fullHistoryTextarea = document.getElementById("full-history");
 const display = document.getElementById("display");
-const BUTTONS = document.querySelectorAll(".button");
-const MIN_TEXTAREA_HEIGHT = 15;
-const MAX_TEXTAREA_HEIGHT = 60;
+const MIN_TEXTAREA_HEIGHT = 28;
+const MAX_TEXTAREA_HEIGHT = 70;
 
 // keyboard keys array
 const NUMBER_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const OPERATIONS_KEYS = [".", "-", "+", "/", "*", "%", "(", ")"];
+const OPERATIONS_KEYS = [".", "-", "+", "/", "*", "%", "(", ")", "π"];
+
+// Check for errors and reset the display if needed
+function isError(){
+  if (Error.some((err) => err.message == display.value)) {
+    display.value = "";
+    return
+  }
+}
+
 
 //this will be used to set history in the textarea
 function setHistoryUI(){
   if(History.getHistory().length > 0){
     document.getElementById("history-btn").style.display = "block"
-    let newTextareaHeight = 10 + (MIN_TEXTAREA_HEIGHT * History.getHistory().length);
+    let newTextareaHeight = (MIN_TEXTAREA_HEIGHT * (History.getHistory().length + 1 ));
     
     if(newTextareaHeight > MAX_TEXTAREA_HEIGHT){
       historyTextarea.style.height = MAX_TEXTAREA_HEIGHT +"px";
@@ -39,67 +47,89 @@ function setHistoryUI(){
 }
 
 setHistoryUI() //set history on page load
-let testcase = evaluate("5 - 9 × 45 + tan( 120 + 45 - 60 )");
-console.log(Number(testcase).toFixed(2));
+
+// let testcase = evaluate("5 - 9 × 45 + tan( 120 + 45 - 60 )");
+// console.log(Number(testcase).toFixed(2));
 
 // itrate throught each element and check which one is clicked
-BUTTONS.forEach((button) => {
-  button.addEventListener("click", function () {
-    const value = button.dataset.value;
+document.querySelector(".calculator-buttons").addEventListener("click", function (event) {
+  // Check if the clicked element is a button (and not something else)
+  if (!event.target.closest(".button")) return;
 
-    // ite will check error and if this is error in input it will clear error adn new input value can be inserted
-    if(Error.some((err) => err.message == display.value)){
-      display.value = "";
+  const button = event.target.closest(".button");
+  const value = button.dataset.value;
+
+  // Check for errors and reset the display if needed
+  isError()
+
+  // 'Degree' or 'Radians' button click to toggle 'active' class
+  if (value === 'Degree' || value === 'Radians') {
+    const activeButton = document.querySelector(".active"); // this will find current active button
+
+    // If their is an active button it will remove the 'active' class from it
+    if (activeButton) {
+      activeButton.classList.remove("active");
     }
 
-    if (value === "=") {
-      try {
-        if (display.value != "") {
-          let result = evaluate(display.value, value);
-          // console.log(evaluate("45+98/5-(10*2)"));
-          if(!isNaN(result) && !Array.isArray(result)){
-            // result = Number(result).tofixed(2)
-            console.log(result);
-            History.setHistory(display.value, result);
-            console.log(History.getHistory(),result);
-            setHistoryUI()
-          }
-          display.value = result;
-        }
-      } catch {
-        display.value = Error[2].message;
+    // Add the 'active' class to the clicked button
+    button.classList.add("active");
+    alert('Change to '+value);
+    return
+  }
+
+  // Handle the "=" button to evaluate the expression
+  if (value === "=") {
+    if (display.value === "") return
+    try {
+      let result = evaluate(display.value, value);
+      if (!isNaN(result) && !Array.isArray(result)) {
+        console.log(result);
+        History.setHistory(display.value, result);
+        console.log(History.getHistory(), result);
+        setHistoryUI();
       }
-    } else if (value === "C") {
-      display.value = "";
-    // } else if (value === "square") {
-    //   display.value = display.value*display.value;
-    // } else if (value === "cube") {
-    //   display.value = display.value*display.value*display.value;
-    } else if (value === "D") {
-      display.value = display.value.slice(0, -1);
-    } else {
-      if(NUMBER_KEYS.includes(value)){
-        display.value += value;
-      }else{
-        display.value += " " +value+ " ";
-      }
+      display.value = result;
+      return
+    } catch {
+      display.value = Error[2].message;
+      return
     }
-  });
+  } 
+
+  // Handle the 'C' button (clear the display)
+  if (value === "C") {
+    display.value = "";
+    return
+  } 
+  // If the key is a decimal point (.), ensure it's only added once
+  if (value === "." && display.value.includes(".")) {
+    return; // Don't add another decimal point
+  }
+
+  // Handle the 'D' button (delete the last character)
+  if (value === "D") {
+    isError()
+    display.value = display.value.slice(0, -1);
+    return
+  } 
+  
+  // Handle numbers and operators (add them to the display)
+  if (NUMBER_KEYS.includes(value)) {
+    display.value += value;
+    return
+  }
+  
+  display.value += " " + value + " ";
+  
 });
-
-  // let result = evaluate("6+2")
-  // console.log("FINAL RESULT "+result);
-// 6+8*2-5+(8-2+5*3)/2
 
 // event listener that will be triggered when a key is pressed
 document.addEventListener("keydown", function (e) {
   // console.log(e.key);
   
   // it will calculate the input 
-  if (e.key == "Enter") {
-    if (display.value != "") {
+  if (e.key == "Enter" && display.value != "") {
       let result = evaluate(display.value)
-      // console.log(result);
 
       if(!isNaN(result) && !Array.isArray(result)){
         History.setHistory(display.value, result);
@@ -107,37 +137,42 @@ document.addEventListener("keydown", function (e) {
         setHistoryUI(); // set history
       }
       display.value = result;
-    }
   }
-
+  
   // it will clear the input
   if (e.key == "Escape") {
     display.value = "";
+    return
   }
 
   // press 's' for sin() 
   if (e.key == "S" || e.key == "s") {
     display.value += " sin( ";
+    return
   }
 
   // press 'c' for cos() 
   if (e.key == "C" || e.key == "c") {
     display.value += " cos( ";
+    return
   }
-
   // press 't' for tan() 
   if (e.key == "T" || e.key == "t") {
     display.value += " tan( ";
+    return
   }
-
+  
   // press 'l' for log() 
   if (e.key == "L" || e.key == "l") {
     display.value += " log( ";
+    return
   }
 
   // it will delete the last character
   if (e.key == "Delete" || e.key == "Backspace") {
+    isError()
     display.value = display.value.slice(0, -1);
+    return
   }
 
   // concat both arrays and check which key is pressed
@@ -147,10 +182,8 @@ document.addEventListener("keydown", function (e) {
       // let testM= "NaN";
       // console.log(Error.some((err) => err.message == testM));
 
-      // ite will check error and if this is error in input it will clear error adn new input value can be inserted
-      if(Error.some((err) => err.message == display.value)){
-        display.value = "";
-      }
+      // Check for errors and reset the display if needed
+      isError()
       
       // If the key is a decimal point (.), ensure it's only added once
       if (e.key === "." && display.value.includes(".")) {
@@ -162,18 +195,21 @@ document.addEventListener("keydown", function (e) {
       // it will change multiply(*) to ×
       if (e.key == "*") {
         display.value += " × ";
-      }else
-        // it will change divide(/) to ÷ 
-        if (e.key == "/") {
-          display.value += " ÷ ";
-        }else{
-          if(NUMBER_KEYS.includes(e.key)){
-            display.value += e.key;
-          }else{
-            display.value += " " +e.key+ " ";
-          }
-        }
+        return
       }
+      // it will change divide(/) to ÷ 
+      if (e.key == "/") {
+        display.value += " ÷ ";
+        return
+      }
+
+      if(NUMBER_KEYS.includes(e.key)){
+        display.value += e.key;
+        return
+      }
+      
+      display.value += " " +e.key+ " ";
+    }
   });
 });
 
