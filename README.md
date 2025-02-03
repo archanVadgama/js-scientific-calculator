@@ -26,6 +26,12 @@ A fully functional scientific calculator built using HTML, CSS, and JavaScript. 
 - index.html  (The main HTML file to load the calculator)  
 - readme.md  (This README file)
 
+## Screenshots
+#### Normal
+![Normal](https://raw.githubusercontent.com/archanVadgama/js-scientific-calculator/refs/heads/developing/assets/images/laptop.png?token=GHSAT0AAAAAAC5LSLEXKEBXP2SX4ZMKPVUGZ5A3AEQ)
+
+#### With History UI 
+![With History UI](https://raw.githubusercontent.com/archanVadgama/js-scientific-calculator/refs/heads/developing/assets/images/laptop_with_history.png?token=GHSAT0AAAAAAC5LSLEWS3LVWCNMCON5Z3FSZ5A3BGA)
 
 ## Concepts Covered
 - Created separate modules for each mathematical operation
