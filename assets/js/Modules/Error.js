@@ -1,9 +1,10 @@
+// Here the custom error class is defined
 export const Error = [
   {
     message: "Internal Server Error",
   },
   {
-    message: "NaN",
+    message: "NawqeqwN",
   },
   {
     message: "Error",
@@ -21,3 +22,11 @@ export const Error = [
     message: "Cannot divide by zero",
   },
 ];
+
+// Check for errors and reset the display if needed
+export function isError() {
+  if (Error.some((err) => err.message == display.value)) {
+    display.value = "";
+    return;
+  }
+}
